@@ -1,7 +1,8 @@
 use std::io;
 
 fn main() {
-    loop { 
+    loop {
+
         println!("rsh> ");
         if let Err(e) = io::Write::flush(&mut io::stdout()) /* if this shit has a problem, throw an error */ {
             eprintln!("Error flushing stdout: {}", e);
@@ -21,6 +22,25 @@ fn main() {
             continue;
         }
 
-        
+        let mut parts = input.split_whitespace(); //returns an iterator
+        let command = parts.next().expect("Should contain a string."); //command is the first slice of the input string, the first word
+        let args: Vec<&str> = parts.collect();
+
+        match command {
+            "exit" => {
+                break;
+            },
+            "cd" => {
+                let n_dir = args.get(0).map(|&str| str);
+                if let Err(e) = std::env::set_current_dir(n_dir) {
+                    eprintln!("cd: {}", e);
+                }
+                continue;
+            }
+            
+            _ => {
+                
+            }
+        }
     }
 }
