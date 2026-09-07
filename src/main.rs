@@ -31,9 +31,12 @@ fn main() {
                 break;
             },
             "cd" => {
-                let n_dir = args.get(0).map(|&str| str);
-                if let Err(e) = std::env::set_current_dir(n_dir) {
-                    eprintln!("cd: {}", e);
+                let n_dir = args.get(0).copied();
+
+                if let Some(path) = n_dir {
+                    if let Err(e) = std::env::set_current_dir(path) {
+                        eprintln!("cd: {}", e);
+                    }
                 }
                 continue;
             }
